@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>选择年级 — 添加企业微信</title>
+<style>
+  body{font-family: "Microsoft YaHei",sans-serif;margin:0;background:linear-gradient(135deg,#f6f8ff,#eaf3ff);text-align:center;color:#333}
+  header{padding:28px 12px}
+  h1{margin:0;font-size:22px}
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px}
+  .grade{background:#3b82f6;color:#fff;padding:12px 18px;border-radius:10px;border:none;font-size:16px;cursor:pointer;box-shadow:0 6px 14px rgba(59,130,246,0.18)}
+  .grade:active{transform:translateY(1px)}
+  #panel{margin-top:28px;opacity:0;transition:opacity .35s}
+  #panel.show{opacity:1}
+  #panel img{max-width:84%;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+  #note{font-size:13px;color:#666;margin-top:8px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>请选择年级，扫码添加对应老师</h1>
+  </header>
+
+  <div class="btns">
+    <button class="grade" onclick="show('7')">七年级</button>
+    <button class="grade" onclick="show('8')">八年级</button>
+    <button class="grade" onclick="show('9')">九年级</button>
+  </div>
+
+  <div id="panel">
+    <h2 id="title" style="font-size:18px;margin:6px 0;"></h2>
+    <img id="qr" src="" alt="二维码">
+    <div id="note">请长按二维码并选择“识别图中二维码”进行添加（在微信内打开效果最佳）。</div>
+  </div>
+
+<script>
+  function show(g){
+    const map = {
+      '7': 'images/qr_7.png',
+      '8': 'images/qr_8.png',
+      '9': 'images/qr_9.png'
+    };
+    document.getElementById('title').textContent = g + '年级咨询/报名';
+    document.getElementById('qr').src = map[g];
+    const p = document.getElementById('panel');
+    p.classList.remove('show');
+    // 小延迟触发淡入动画（每次点击都会重新淡入）
+    setTimeout(()=> p.classList.add('show'), 60);
+  }
+</script>
+</body>
+</html>
