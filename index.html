@@ -1,54 +1,70 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
-<title>选择年级 — 添加企业微信</title>
-<style>
-  body{font-family: "Microsoft YaHei",sans-serif;margin:0;background:linear-gradient(135deg,#f6f8ff,#eaf3ff);text-align:center;color:#333}
-  header{padding:28px 12px}
-  h1{margin:0;font-size:22px}
-  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px}
-  .grade{background:#3b82f6;color:#fff;padding:12px 18px;border-radius:10px;border:none;font-size:16px;cursor:pointer;box-shadow:0 6px 14px rgba(59,130,246,0.18)}
-  .grade:active{transform:translateY(1px)}
-  #panel{margin-top:28px;opacity:0;transition:opacity .35s}
-  #panel.show{opacity:1}
-  #panel img{max-width:84%;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
-  #note{font-size:13px;color:#666;margin-top:8px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班级二维码选择</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .class-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .class-buttons button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .class-buttons button:hover {
+            background-color: #45a049;
+        }
+        .qr-container img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 5px;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>请选择年级，扫码添加对应老师</h1>
-  </header>
 
-  <div class="btns">
-    <button class="grade" onclick="show('7')">七年级</button>
-    <button class="grade" onclick="show('8')">八年级</button>
-    <button class="grade" onclick="show('9')">九年级</button>
-  </div>
+    <h1>请选择您孩子所在的班级</h1>
+    <div class="class-buttons" id="classButtons"></div>
 
-  <div id="panel">
-    <h2 id="title" style="font-size:18px;margin:6px 0;"></h2>
-    <img id="qr" src="" alt="二维码">
-    <div id="note">请长按二维码并选择“识别图中二维码”进行添加（在微信内打开效果最佳）。</div>
-  </div>
+    <div class="qr-container" id="qrContainer"></div>
 
-<script>
-  function show(g){
-    const map = {
-      '7': 'qr_7.png',
-      '8': 'qr_8.png',
-      '9': 'qr_9.png'
-    };
-    document.getElementById('title').textContent = g + '年级咨询/报名';
-    document.getElementById('qr').src = map[g];
-    const p = document.getElementById('panel');
-    p.classList.remove('show');
-    // 小延迟触发淡入动画（每次点击都会重新淡入）
-    setTimeout(()=> p.classList.add('show'), 60);
-  }
-</script>
+    <script>
+        const classButtonsContainer = document.getElementById("classButtons");
+        const qrContainer = document.getElementById("qrContainer");
+
+        for (let i = 2501; i <= 2542; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = `${i} 班`;
+            btn.addEventListener("click", () => {
+                qrContainer.innerHTML = `<img src="qrcodes/${i}.png" alt="二维码 - ${i}班">`;
+            });
+            classButtonsContainer.appendChild(btn);
+        }
+    </script>
+
 </body>
 </html>
-
