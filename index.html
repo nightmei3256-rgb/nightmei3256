@@ -3,66 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>班级二维码选择</title>
+    <title>班级微信群二维码</title>
     <style>
+        /* 整体页面样式 */
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bg.jpg') no-repeat center center fixed; /* 校园风背景图 */
+            background-size: cover;
+        }
+
+        /* 容器 */
+        .container {
             text-align: center;
-            background-color: #f9f9f9;
             padding: 20px;
         }
+
+        /* 标题 */
         h1 {
-            color: #333;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         }
-        .class-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+
+        /* 按钮网格布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 自适应列数 */
+            gap: 15px;
+            max-width: 800px;
+            margin: auto;
         }
-        .class-buttons button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
+
+        /* 班级按钮样式 */
+        .class-btn {
+            background-color: rgba(255, 255, 255, 0.9);
             border: none;
-            border-radius: 6px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
-        .class-buttons button:hover {
-            background-color: #45a049;
+
+        /* 按钮点击时的效果 */
+        .class-btn:hover {
+            transform: scale(1.05);
         }
-        .qr-container img {
-            max-width: 80%;
+
+        /* 弹窗背景 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        /* 弹窗内容 */
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* 关闭按钮 */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        /* 弹出的二维码 */
+        .qr-code {
+            max-width: 100%;
             height: auto;
-            margin-top: 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            padding: 5px;
-            background-color: white;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-    <h1>请选择您孩子所在的班级</h1>
-    <div class="class-buttons" id="classButtons"></div>
+    <div class="container">
+        <h1>选择班级进入微信群</h1>
+        <div class="grid" id="classGrid"></div>
+    </div>
 
-    <div class="qr-container" id="qrContainer"></div>
+    <!-- 弹窗 -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <img id="qrImage" class="qr-code" src="" alt="二维码">
+        </div>
+    </div>
 
     <script>
-        const classButtonsContainer = document.getElementById("classButtons");
-        const qrContainer = document.getElementById("qrContainer");
-
+        // 动态生成 2501 到 2542 的班级按钮
+        const classGrid = document.getElementById('classGrid');
         for (let i = 2501; i <= 2542; i++) {
-            const btn = document.createElement("button");
-            btn.textContent = `${i} 班`;
-            btn.addEventListener("click", () => {
-                qrContainer.innerHTML = `<img src="qrcodes/${i}.png" alt="二维码 - ${i}班">`;
-            });
-            classButtonsContainer.appendChild(btn);
+            const btn = document.createElement('button');
+            btn.className = 'class-btn';
+            btn.textContent = i + '班';
+            btn.onclick = () => showQRCode(i);
+            classGrid.appendChild(btn);
+        }
+
+        // 显示二维码弹窗
+        function showQRCode(classNum) {
+            document.getElementById('modalTitle').textContent = classNum + '班微信群';
+            document.getElementById('qrImage').src = `images/${classNum}.png`; // 二维码路径
+            document.getElementById('qrModal').style.display = 'block';
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+
+        // 点击空白区域关闭弹窗
+        window.onclick = function(event) {
+            const modal = document.getElementById('qrModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 
